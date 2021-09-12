@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import { getCoinDetails, getTradeVolume} from "../store/actions";
+import { getCoinDetails, getTradeVolume, toggleFav } from "../store/actions";
 
 const CoinDetailsPage = () => {
     const coinDetails = useSelector(state => state.coinDetails);
     const tradeVolume = useSelector(state => state.tradeVolume);
+    const favourites = useSelector(state => state.favourites);
     const history = useHistory();
 
     const dispatch = useDispatch();
@@ -29,6 +30,9 @@ const CoinDetailsPage = () => {
                     <img className="h-10 w-10 rounded-full"
                         src={details && details.coinIcon} alt="" />
                 </div>
+                <div style={{ width: "40px" }} className="px-6 py-4 whitespace-nowrap text-sm text-gray-500" onClick={() => dispatch(toggleFav(pathname.toUpperCase(), favourites[pathname.toUpperCase()]))}>
+                    <svg className={`mx-1 w-4 h-4 fill-current text-${favourites[pathname.toUpperCase()] ? "yellow-500" : "gray-400"}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" /></svg>
+                </div>
             </div>
             <div className="border-t border-gray-200">
                 <dl>
@@ -46,7 +50,7 @@ const CoinDetailsPage = () => {
                     </div>
                 </dl>
             </div>
-        </div> : "No data For this coin"
+        </div> : null
     );
 }
 
